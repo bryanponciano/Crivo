@@ -1,0 +1,44 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.vs/
+.vs/
+*.DotSettings.user
+
+# Node / Frontend
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Environment
+.env
+.env.local
+.env.*.local
+appsettings.*.local.json
+
+# Docker volumes
+postgres_data/
+redis_data/
+
+# Build outputs
+publish/
+artifacts/
+
+# Arquivos Pesados / Bloqueio GitHub
+*.exe
+Instalador/

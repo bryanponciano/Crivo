@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Banco de Dados
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: crive_admin
+      POSTGRES_PASSWORD: crive_dev_password_2024
+      POSTGRES_DB: crive
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    restart: always
+
+  # Cache e Pub/Sub
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  # Backend (API .NET)
+  api:
+    build:
+      context: ../
+      dockerfile: src/Crive.Api/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=crive;Username=crive_admin;Password=crive_dev_password_2024
+      - ConnectionStrings__Redis=redis:6379
+      - Urls=http://+:5000
+      # O Nginx vai se comunicar com a API via container hostname "api"
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  # Frontend (Dashboard React + Nginx)
+  dashboard:
+    build:
+      context: ../src/crive-dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"  # Expondo o Nginx na porta 8080 do Servidor para não dar conflito no Windows
+    depends_on:
+      - api
+    restart: always
+
+volumes:
+  pgdata:

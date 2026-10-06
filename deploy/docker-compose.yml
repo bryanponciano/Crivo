@@ -1,0 +1,48 @@
+# Docker Compose para desenvolvimento local do Crivo
+# Sobe PostgreSQL + Redis para o backend API
+
+version: '3.8'
+
+services:
+  # ============================================
+  # PostgreSQL 16 — Banco de dados principal
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: crive-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crive
+      POSTGRES_USER: crive_admin
+      POSTGRES_PASSWORD: crive_dev_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./seed.sql:/docker-entrypoint-initdb.d/01-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crive_admin -d crive"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # Redis 7 — Cache de heartbeat + SignalR backplane
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: crive-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
