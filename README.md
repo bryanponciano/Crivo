@@ -1,60 +1,22 @@
-# 🛡️ Crivo — Sistema de Gestão B2B e Filtro de Endpoint
+# 🛡️ Crivo - Corporate Domain Blocker
 
-Sistema corporativo de controle de produtividade e bloqueio avançado de sites, com interceptação no nível do sistema operacional via Windows Filtering Platform (WFP).
+![Security](https://img.shields.io/badge/Security-OS_Level-blue?style=for-the-badge)
+![Infrastructure](https://img.shields.io/badge/Network-Infrastructure-darkgreen?style=for-the-badge)
 
-## Arquitetura
+## 📌 About the Project
+Crivo is a network infrastructure and security tool designed for enterprise environments. It operates directly at the operating system level to block access to unauthorized websites (e.g., social media, entertainment), ensuring team productivity and preventing local network vulnerabilities.
 
-| Componente | Tecnologia | Descrição |
-|:---|:---|:---|
-| **Crive.Shared** | .NET 8 Class Library | DTOs, Enums e Contratos SignalR compartilhados |
-| **Crive.Api** | ASP.NET Core 8 | API REST + SignalR Hubs (backend multi-tenant) |
-| **Crive.Agent** | .NET 8 Worker Service | Agente Windows com WFP, DNS proxy e bloqueio SNI |
-| **crive-dashboard** | React 18 + TypeScript + Vite | Painel web SPA para gestão |
+## 🚀 Key Features
+- **OS-Level Blocking:** Modifies internal system configurations (DNS/Hosts) to restrict web access.
+- **Enterprise Productivity:** Prevents access to non-work-related sites during business hours.
+- **Tamper Resistance:** Designed to run with administrative privileges, preventing standard users from bypassing the block via Task Manager.
+- **Admin Management:** Easy for system administrators to update and deploy the domain "blacklist".
 
-## Pré-requisitos
+## 🛠️ Technologies & Concepts
+- OS Security Policies
+- Local Network Configuration
+- DNS / Hosts File Manipulation
+- Automation & Scripting
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [Node.js 20+](https://nodejs.org/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (para PostgreSQL + Redis)
-
-## Setup Rápido
-
-### 1. Subir banco de dados e cache
-```bash
-cd deploy
-docker-compose up -d
-```
-
-### 2. Rodar o Backend
-```bash
-cd src/Crive.Api
-dotnet run
-```
-A API estará em `https://localhost:5001` e `http://localhost:5000`
-
-### 3. Rodar o Frontend
-```bash
-cd src/crive-dashboard
-npm install
-npm run dev
-```
-O dashboard estará em `http://localhost:5173`
-
-### 4. Compilar o Agente (requer Windows)
-```bash
-cd src/Crive.Agent
-dotnet publish -c Release -r win-x64 --self-contained
-```
-
-## Credenciais de Desenvolvimento
-
-| Campo | Valor |
-|:---|:---|
-| Email | admin@exemplo.com |
-| Senha | admin123 |
-| Tenant Code | exemplo |
-| Senha Desinstalação | CriveAdmin2024! |
-
-## Licença
-
-Proprietário — Todos os direitos reservados.
+---
+*Developed by [Bryan Ponciano](https://www.linkedin.com/in/bryan-ponciano-7a4604289/)*
